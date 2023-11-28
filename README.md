@@ -46,6 +46,10 @@ git checkout [NAME]     -> Move to "[NAME]" branch
 git merge --no-ff main  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the develop branch)
 git push origin [NAME]  -> Pushes the changes from our local branch "[NAME]" to the remote branch "[NAME]" (origin). Equal to git push while on the [NAME] branch.
 ```
+**Fast cmd**:
+```sh
+git checkout [X] && git merge --no-ff main && git push origin [X]
+```
 
 ### Develop branch:
 #### Creating a develop branch
@@ -54,6 +58,11 @@ In a newly created repository you will already have the main branch, to create t
     git checkout -b develop main           -> Creates local branch "develop" from branch "main"
     git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
 ```
+**Fast cmd**:
+```sh
+git checkout -b develop main && git push --set-upstream origin develop
+```
+
 #### Merging a stable develop state into main
 Once the develop branch is stable, you can merge it into the main branch so that the released version can be updated. Releases are normally tagged for easier identification and to give more information about the release.
 ```sh
@@ -63,13 +72,18 @@ git tag -a <tagname>      -> Optional, creates tag of currect version of main. E
 git push origin <tagname> -> Optional, pushes tag of currect version of main
 git push origin main
 ```
+**Fast cmd**:
+```sh
+git checkout main && git merge --no-ff develop && git push origin main
+git checkout main && git merge --no-ff develop && git tag -a [X] && git push origin [X] && git push origin main
+```
 
 ### Hotfix branch:
 #### Creating a hotfix branch
 When creating a hotfix branch, we want to create it from the last released version, `main`. Change to the main branch and make sure that it's the last version with the following commands.
 ```sh
-    git checkout main
-    git pull
+git checkout main
+git pull
 ```
 
 Once done, you can create the hotfix branch via the next commands. Make sure to start the name with `hotfix-`.
@@ -87,6 +101,10 @@ git push origin --delete hotfix-[NAME]
 git tag -a <tagname>
 git push origin <tagname>
 git push origin main
+```
+**Fast cmd**:
+```sh
+git checkout main && git merge --no-ff hotfix-[X] && git push origin --delete hotfix-[X] && git tag -a [X] && git push origin [X] && git push origin main
 ```
 
 And the following commands to update the develop branch.
