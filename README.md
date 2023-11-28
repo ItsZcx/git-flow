@@ -28,64 +28,69 @@ Feature branches are used to develop new features without specifying the exact r
 - **Merge Target**: `develop`
 - **Naming**: Anything except `main`, `master`, `develop`, `release-*`, or `hotfix-*`.
 
-
-## Setting up the repository
-In a newly created repository you will already have the main branch, to create the local develop branch and push it to the repository use the following commands.
-```sh
-    git checkout -b develop main           -> Creates local branch "develop" from branch "main"
-    git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
-```
-
 ## How to effectively use the branch system
-### Develop branch:
-#### Creating a develop branch
-In a newly created repository you will already have the main branch, to create the develop branch use the following command.
-```sh
-    git checkout -b develop main
-```
-#### Merging a stable develop state into main
-Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Releases are tagged for easier identification and to give more information about the release.
-```sh
-git checkout main         -> Move to "main" branch
-git merge --no-ff develop -> Merges "develop" into "main" without fast-forward (keeps historical info of the develop branch)
-git tag -a <tagname>      -> Create tag of currect version of main
-git push origin <tagname> -> Push tag of currect version of main
-git push origin main      -> Push current code to main
-```
+### Main branch:
+#### Creating a main branch
+The main branch is automatically created when the repository is initializated. It's possible that instead of main the branch is called master.
 
-### Hotfix branch:
-#### Creating a hotfix branch
-When creating a hotfix because there is a bug on the released version, we want to create it from the released version, main. Change to the main branch and make sure that it's the last version with the following command.
-```sh
-    git checkout main
-    git pull
-```
-
-Once done, you can create the hotfix branch via the next command. Make sure to start the name with **hotfix-**.
-```sh
-git checkout -b hotfix-[name] main
-git push --set-upstream origin hotfix-[name]
-```
-
-#### Merging a hotfix
-After fixing the bug you have to merge it into both main and develop branches, use the following command to update the main branch.
-```sh
-git checkout main
-git merge --no-ff hotfix-[name]
-git push origin --delete hotfix-[name]
-git tag -a <tagname>
-git push origin <tagname>
-git push origin main
-```
-
-And the following command to update the develop branch.
+#### Merging main branch into another branch
+Merging the main branch into other branches is not recomended, but in case that you need to do it you can follow the next commands. Before running them make sure that you are in the main branch, if you are not, you will be merging a different branch into the one that you wanted to update main
 ```sh
 git checkout develop
 git merge --no-ff main
 git push origin develop
 ```
 
-### Feature branches
+### Develop branch:
+#### Creating a develop branch
+In a newly created repository you will already have the main branch, to create the develop branch use the following commands.
+```sh
+    git checkout -b develop main           -> Creates local branch "develop" from branch "main"
+    git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
+```
+#### Merging a stable develop state into main
+Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Releases are normally tagged for easier identification and to give more information about the release.
+```sh
+git checkout main         -> Move to "main" branch
+git merge --no-ff develop -> Merges "develop" into "main" without fast-forward (keeps historical info of the develop branch)
+git tag -a <tagname>      -> Optional, creates tag of currect version of main. Ex: v1.0
+git push origin <tagname> -> Optional, pushes tag of currect version of main
+git push origin main      -> Pushes the changes on our local branch "main" to the remote branch "main" (origin). Same as git push while on the main branch.
+```
+
+### Hotfix branch:
+#### Creating a hotfix branch
+When creating a hotfix because there is a bug on the released version, we want to create it from the released version, main. Change to the main branch and make sure that it's the last version with the following commands.
+```sh
+    git checkout main
+    git pull
+```
+
+Once done, you can create the hotfix branch via the next commands. Make sure to start the name with **hotfix-**.
+```sh
+git checkout -b hotfix-[NAME] main
+git push --set-upstream origin hotfix-[NAME]
+```
+
+#### Merging a hotfix
+After fixing the bug you have to merge it into both the main and develop branches, use the following commands to update the main branch as well as to delete the hotfix branch.
+```sh
+git checkout main
+git merge --no-ff hotfix-[NAME]
+git push origin --delete hotfix-[NAME]
+git tag -a <tagname>
+git push origin <tagname>
+git push origin main
+```
+
+And the following commands to update the develop branch.
+```sh
+git checkout develop
+git merge --no-ff main
+git push origin develop
+```
+
+### Feature branches:
 #### Creating a feature branch
 When starting to work on a new feature, you have to branch off from the latest version of the develop branch. You can move to the develop branch and update it using the following commands.
 ```sh
@@ -93,7 +98,7 @@ When starting to work on a new feature, you have to branch off from the latest v
     git pull
 ```
 
-Once you have made sure that it's on the latest version you can create a new feature branch via this command. Update [NAME] to your desired name.
+Once you have made sure that it's on the latest version you can create a new feature branch via this command.
 ```sh
     git checkout -b [NAME] develop
 ```
@@ -101,30 +106,10 @@ Once you have made sure that it's on the latest version you can create a new fea
 #### Merging a finished feature into develop
 Once you have finished a feature, you can merge it into the develop branch so that it can become a new feature to the upcoming release, or discarded if the feature isn't viable. To do that you have to move to the develop branch and merge the feature into it, we will also delete the feature branch while merging it.
 ```sh
-    git checkout develop      -> Move to "develop" branch
-    git merge --no-ff [NAME]  -> Merges "[NAME]" into "develop" without fast-forward (keeps historical info of the feature branch)
-    git branch -d [NAME]      -> Deletes the branch "[NAME]"
-    git push origin develop   -> Pushes the changes on our local branch "develop" to the remote branch "develop" (the one in the repository). Same as git push while on the develop branch.
+    git checkout develop
+    git merge --no-ff [NAME]
+    git push origin --delete [NAME]
+    git push origin develop
 ```
 
-
-
-## Command Examples
-```
-
-
-Hotfix Branch
-Creating a hotfix branch:
-
-$ git checkout -b hotfix-1.2.1 master
-$ ./bump-version.sh 1.2.1
-$ git commit -a -m "Bumped version number to 1.2.1"
-
-Finishing a hotfix branch:
-sh
-Copy code
-$ git checkout master
-$ git merge --no-ff hotfix-1.2.1
-$ git tag -a 1.2.1
-$ git checkout develop
-$ git merge --no-ff hotfix-1.2.1
+## Visualization
