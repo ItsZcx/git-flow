@@ -20,7 +20,7 @@ It's purpose is merging new features for upcoming releases until the branch reac
 Hotfix branches are used to fix severe bugs that have been released in production and cannot wait for a new release to be fixed. The essence is that work of team members (on the develop branch) can continue, while another person is preparing a quick production fix.
 - **Origin**: `main`
 - **Merge Target**: `develop` and `main`.
-- **Naming**: Ideally something like `hotfix-*`.
+- **Naming**: Has to start with `hotfix-*`.
 
 ### Feature Branches
 Feature branches are used to develop new features without specifying the exact release they'll be a part of. These branches exist until the feature is completed, then they're merged into develop to add the new feature to the upcoming release, or discarded if the feature isn't viable.
@@ -36,9 +36,9 @@ The main branch is automatically created when the repository is initializated. I
 #### Merging main branch into another branch
 Merging the main branch into other branches is not recomended, but in case that you need to do it you can follow the next commands. Before running them make sure that you are in the main branch, if you are not, you will be merging a different branch into the one that you wanted to update main
 ```sh
-git checkout develop
-git merge --no-ff main
-git push origin develop
+git checkout [NAME]     -> Move to "[NAME]" branch
+git merge --no-ff main  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the develop branch)
+git push origin [NAME]  -> Pushes the changes from our local branch "[NAME]" to the remote branch "[NAME]" (origin). Equal to git push while on the [NAME] branch.
 ```
 
 ### Develop branch:
@@ -51,11 +51,11 @@ In a newly created repository you will already have the main branch, to create t
 #### Merging a stable develop state into main
 Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Releases are normally tagged for easier identification and to give more information about the release.
 ```sh
-git checkout main         -> Move to "main" branch
-git merge --no-ff develop -> Merges "develop" into "main" without fast-forward (keeps historical info of the develop branch)
+git checkout main
+git merge --no-ff develop
 git tag -a <tagname>      -> Optional, creates tag of currect version of main. Ex: v1.0
 git push origin <tagname> -> Optional, pushes tag of currect version of main
-git push origin main      -> Pushes the changes on our local branch "main" to the remote branch "main" (origin). Same as git push while on the main branch.
+git push origin main
 ```
 
 ### Hotfix branch:
@@ -73,7 +73,7 @@ git push --set-upstream origin hotfix-[NAME]
 ```
 
 #### Merging a hotfix
-After fixing the bug you have to merge it into both the main and develop branches, use the following commands to update the main branch as well as to delete the hotfix branch.
+After fixing the bug you have to merge it into both the main and develop branches, use the following commands to update the main branch as well as to delete the hotfix branch. Creating a tag is **mandatory**, you don't want to have the last tag bugged!
 ```sh
 git checkout main
 git merge --no-ff hotfix-[NAME]
@@ -113,3 +113,8 @@ Once you have finished a feature, you can merge it into the develop branch so th
 ```
 
 ## Visualization
+You can visualize the branch architecture with the following command.
+```sh
+git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+```
+I recommed creating an alias so that you don't have to writte or copy all of that every single time.
