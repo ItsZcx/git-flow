@@ -72,7 +72,7 @@ After fixing the bug you have to merge it into both main and develop branches, u
 ```sh
 git checkout main
 git merge --no-ff hotfix-[name]
-git branch -d hotfix-[name]
+git push origin --delete hotfix-[name]
 git tag -a <tagname>
 git push origin <tagname>
 git push origin main
