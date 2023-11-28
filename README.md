@@ -60,12 +60,10 @@ Feature branches are used to develop new features without specifying the exact r
 In a newly created repository you will already have the main branch, to create the local develop branch and push it to the repository use the following commands.
 ```sh
     git checkout -b develop main           -> Creates local branch "develop" from branch "main"
-    git push --set-upstream origin develop -> Pushes newly created local branch to the repository
+    git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
 ```
 
-
 ## How to effectively use the branch system
-
 ### Develop branch:
 #### Creating a develop branch
 In a newly created repository you will already have the main branch, to create the develop branch use the following command.
@@ -73,11 +71,13 @@ In a newly created repository you will already have the main branch, to create t
     git checkout -b develop main
 ```
 #### Merging a stable develop state into main
-Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Merges to main are tagged for easier identification and to give more information about the release.
+Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Releases are tagged for easier identification and to give more information about the release.
 ```sh
-git checkout main
-git merge --no-ff develop
-git tag -a <tagname>
+git checkout main         -> Move to "main" branch
+git merge --no-ff develop -> Merges "develop" into "main" without fast-forward (keeps historical info of the develop branch)
+git tag -a <tagname>      -> Create tag of currect version of main
+git push origin <tagname> -> Push tag of currect version of main
+git push origin main      -> Push current code to main
 ```
 
 ### Feature branches
