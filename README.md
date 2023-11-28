@@ -1,30 +1,3 @@
-
-Creating new branch [NAME] from last commit on branch [OriginBranch]
-        $ git checkout -b [NAME] [OriginBranch]
-    Example:
-        $ git checkout -b develop main
-
-Merging branch [NAME] into original branch [OriginBranch] and deleting branch [NAME]
-    Change to [OriginBranch]
-        $ git checkout [OriginBranch]
-    Merge [NAME] into [OriginBranch], **--no-ff** leaves historical information of the branch.
-        $ git merge --no-ff [NAME]
-    Delete branch [NAME]
-        $ git branch -d [NAME]
-    Push changes to [OriginBranch]
-        $ git push origin [OriginBranch]
-
-    Example:
-    $ git checkout develop
-        Switched to branch develop
-    $ git merge --no-ff feature
-        Updating ea1b82a..05e9557
-        (Summary of changes)
-    $ git branch -d feature
-        Deleted branch feature (was 05e9557).
-    $ git push origin develop
-----------------------------------------------------------------
-
 # Git Branching Model
 
 This repository follows a branching model inspired by existing models. It maintains two main branches:
@@ -41,19 +14,19 @@ The `main` branch holds the production-ready code. Every merge into `main` marks
 It's purpose is merging new features for upcoming releases until the branch reaches a stable point and is ready to be released, all of the changes should be merged back into main somehow and then tagged with a release number
 - **Origin**: `main`
 - **Merge Target**: `main`
-- **Naming**: Anything except `main`, `master`, `release - *`, or `hotfix - *`.
+- **Naming**: Anything except `main`, `master`, `release-*`, or `hotfix-*`.
 
 ### Hotfix Branches
 Hotfix branches are used to fix severe bugs that have been released in production and cannot wait for a new release to be fixed. The essence is that work of team members (on the develop branch) can continue, while another person is preparing a quick production fix.
 - **Origin**: `main`
 - **Merge Target**: `develop` and `main`.
-- **Naming**: Ideally something like `hotfix - *`.
+- **Naming**: Ideally something like `hotfix-*`.
 
 ### Feature Branches
 Feature branches are used to develop new features without specifying the exact release they'll be a part of. These branches exist until the feature is completed, then they're merged into develop to add the new feature to the upcoming release, or discarded if the feature isn't viable.
 - **Origin**: `develop`
 - **Merge Target**: `develop`
-- **Naming**: Anything except `main`, `master`, `develop`, `release - *`, or `hotfix - *`.
+- **Naming**: Anything except `main`, `master`, `develop`, `release-*`, or `hotfix-*`.
 
 
 ## Setting up the repository
@@ -78,6 +51,31 @@ git merge --no-ff develop -> Merges "develop" into "main" without fast-forward (
 git tag -a <tagname>      -> Create tag of currect version of main
 git push origin <tagname> -> Push tag of currect version of main
 git push origin main      -> Push current code to main
+```
+
+### Hotfix branch:
+#### Creating a hotfix branch
+When creating a hotfix because there is a bug on the released version, we want to create it from the released version, main. Change to the main branch and make sure that it's the last version with the following command.
+```sh
+    git checkout main
+    git pull
+```
+
+Once done, you can create the hotfix branch via the next command. Make sure to start the name with **hotfix-**.
+```sh
+git checkout -b hotfix-[name] main
+git push --set-upstream origin hotfix-[name]
+```
+
+#### Merging a hotfix
+After fixing the bug you have to merge it into both main and develop branches, use the following command to update the main branch.
+```sh
+git checkout main
+git merge --no-ff hotfix-[name]
+git branch -d hotfix-[name]
+git tag -a <tagname>
+git push origin <tagname>
+git push origin main
 ```
 
 ### Feature branches
