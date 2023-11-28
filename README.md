@@ -78,6 +78,13 @@ git push origin <tagname>
 git push origin main
 ```
 
+And the following command to update the develop branch.
+```sh
+git checkout develop
+git merge --no-ff main
+git push origin develop
+```
+
 ### Feature branches
 #### Creating a feature branch
 When starting to work on a new feature, you have to branch off from the latest version of the develop branch. You can move to the develop branch and update it using the following commands.
