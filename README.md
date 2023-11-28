@@ -72,7 +72,7 @@ In a newly created repository you will already have the main branch, to create t
 ```sh
     git checkout -b develop main
 ```
-#### Merging a finished feature into develop
+#### Merging a stable develop state into main
 Once the develop branch is stable, you can merge it into the main branch so that the released version can updated. Merges to main are tagged for easier identification and to give more information about the release.
 ```sh
 git checkout main
