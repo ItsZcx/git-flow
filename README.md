@@ -14,7 +14,7 @@ As well as multiple, if necessary, secondary branches:
 ## Used Branches
 
 ### Main Branch
-The `main` branch holds the production-ready code. Every merge into `main` marks a new production release. There are no casual commits on `main`, only merges comming from the `develop` branch.
+The `main` branch holds the production-ready code. Every merge into `main` marks a new production release. There are no casual commits on `main`, only merges comming from the `develop` and `hotfix-*` branch.
 
 ### Develop Branch
 It's purpose is merging new features for upcoming releases until the branch reaches a stable point and is ready to be released, all of the changes should be merged back into `main` and then tagged with a release number.
@@ -68,8 +68,8 @@ Once the develop branch is stable, you can merge it into the main branch so that
 ```sh
 git checkout main
 git merge --no-ff develop
-git tag -a <tagname>      -> Optional, creates tag of currect version of main. Ex: v1.0
-git push origin <tagname> -> Optional, pushes tag of currect version of main
+git tag -a <tagname>      -> Optional, creates tag of current version of main. Ex: v1.0
+git push origin <tagname> -> Optional, pushes tag of current version of main
 git push origin main
 ```
 **Fast cmd**:
