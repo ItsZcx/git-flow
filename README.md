@@ -42,40 +42,43 @@ The `main` branch is automatically created when the repository is initializated.
 #### Merging main branch into another branch
 Merging the main branch into other branches is not recomended, but in case that you need to do it you can follow the next commands. Before running them **make sure that you are in the main branch**, if you are not, you will be merging a different branch into the one that you wanted to update main into.
 ```sh
-git checkout [NAME]     -> Move to "[NAME]" branch
-git merge --no-ff main  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the develop branch)
+git checkout [NAME] &&     -> Move to "[NAME]" branch
+git pull &&                -> Pulls remote branch changes
+git merge --no-ff main &&  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the develop branch)
 git push origin [NAME]  -> Pushes the changes from our local branch "[NAME]" to the remote branch "[NAME]" (origin). Equal to git push while on the [NAME] branch.
 ```
 **Fast cmd**:
 ```sh
-git checkout [X] && git merge --no-ff main && git push origin [X]
+git checkout [X] && git pull && git merge --no-ff main && git push origin [X]
 ```
 
 ### Develop branch:
 #### Creating a develop branch
 In a newly created repository you will already have the main branch, to create the develop branch use the following commands.
 ```sh
-    git checkout -b develop main           -> Creates local branch "develop" from branch "main"
-    git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
+git pull &&                            -> Pulls remote branch changes
+git checkout -b develop main &&        -> Creates local branch "develop" from branch "main"
+git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
 ```
 **Fast cmd**:
 ```sh
-git checkout -b develop main && git push --set-upstream origin develop
+git checkout -b develop main && git pull && git push --set-upstream origin develop
 ```
 
 #### Merging a stable develop state into main
 Once the develop branch is stable, you can merge it into the main branch so that the released version can be updated. Releases are normally tagged for easier identification and to give more information about the release.
 ```sh
-git checkout main
-git merge --no-ff develop
-git tag -a <tagname>      -> Optional, creates tag of current version of main. Ex: v1.0
-git push origin <tagname> -> Optional, pushes tag of current version of main
+git checkout main &&
+git pull &&
+git merge --no-ff develop &&
+git tag -a <tagname> &&      -> Optional, creates tag of current version of main. Ex: v1.0
+git push origin <tagname> && -> Optional, pushes tag of current version of main
 git push origin main
 ```
 **Fast cmd**:
 ```sh
-git checkout main && git merge --no-ff develop && git push origin main
-git checkout main && git merge --no-ff develop && git tag -a [X] && git push origin [X] && git push origin main
+git checkout main && git pull && git merge --no-ff develop && git push origin main
+git checkout main && git pull && git merge --no-ff develop && git tag -a [X] && git push origin [X] && git push origin main
 ```
 
 ### Feature branches:
@@ -96,6 +99,7 @@ git push --set-upstream origin [NAME]
 Once you have finished a feature, you can merge it into the develop branch so that it can become a new feature to the upcoming release, or discarded if the feature isn't viable. To do that you have to move to the develop branch and merge the feature into it, we will also delete the feature branch while merging it.
 ```sh
 git checkout develop &&
+git pull &&
 git merge --no-ff [NAME] &&
 git push origin --delete [NAME] &&
 git push origin develop
@@ -119,6 +123,7 @@ git push --set-upstream origin hotfix-[NAME]
 After fixing the bug you have to merge it into both `main` and `develop`, use the following commands to update the main branch as well as to delete the hotfix branch. Creating a tag is **mandatory**, you don't want to have the last tag bugged!
 ```sh
 git checkout main &&
+git pull &&
 git merge --no-ff hotfix-[NAME] &&
 git push origin --delete hotfix-[NAME] &&
 git tag -a <tagname> &&
@@ -127,12 +132,13 @@ git push origin main
 ```
 **Fast cmd**:
 ```sh
-git checkout main && git merge --no-ff hotfix-[X] && git push origin --delete hotfix-[X] && git tag -a [X] && git push origin [X] && git push origin main
+git checkout main && git pull && git merge --no-ff hotfix-[X] && git push origin --delete hotfix-[X] && git tag -a [X] && git push origin [X] && git push origin main
 ```
 
 And the following commands to update the develop branch.
 ```sh
 git checkout develop &&
+git pull &&
 git merge --no-ff main &&
 git push origin develop
 ```
