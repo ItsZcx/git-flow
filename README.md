@@ -62,7 +62,7 @@ git push --set-upstream origin develop -> Pushes newly created local develop bra
 ```
 **Fast cmd**:
 ```sh
-git checkout -b develop main && git pull && git push --set-upstream origin develop
+git pull && git checkout -b develop main && git push --set-upstream origin develop
 ```
 
 #### Merging a stable develop state into main
