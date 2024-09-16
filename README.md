@@ -56,7 +56,7 @@ git checkout [X] && git pull && git merge --no-ff main && git push origin [X]
 #### Creating a development branch
 In a newly created repository you will already have the main branch, to create the development branch use the following commands.
 ```sh
-git pull &&                            -> Pulls remote branch changes
+git pull &&                        -> Pulls remote branch changes
 git checkout -b dev main &&        -> Creates local branch "dev" from branch "main"
 git push --set-upstream origin dev -> Pushes newly created local dev branch to the repository
 ```
