@@ -5,7 +5,7 @@ This repository follows a branching model inspired by the existing model [git-fl
 It maintains two main branches:
 
 - **main**: Reflects a production-ready state.
-- **develop**: Reflects the latest delivered development changes for the next release.
+- **dev**: Reflects the latest delivered development changes for the next release.
 
 As well as multiple, if necessary, secondary branches:
 - **hotfix-***: Reflects a severe bug fix that cannot wait for the next release.
@@ -14,25 +14,25 @@ As well as multiple, if necessary, secondary branches:
 ## Used Branches
 
 ### Main Branch
-The `main` branch holds the production-ready code. Every merge into `main` marks a new production release. There are no casual commits on `main`, only merges comming from the `develop` and `hotfix-*` branch.
+The `main` branch holds the production-ready code. Every merge into `main` marks a new production release. There are no casual commits on `main`, only merges comming from the `dev` and `hotfix-*` branch.
 
-### Develop Branch
+### Dev Branch
 It's purpose is merging new features for upcoming releases until the branch reaches a stable point and is ready to be released, all of the changes should be merged back into `main` and then tagged with a release number.
 - **Origin**: `main`.
 - **Merge Target**: `main`.
 - **Naming**: Anything except `main`, `master`, `release-*`, or `hotfix-*`.
 
 ### Hotfix Branches
-Hotfix branches are used to fix **severe bugs** that have been released in production and **cannot wait** for a new release to be fixed. The essence is that work of team members (on the `develop` branch) can continue, while another person is preparing a quick production fix.
+Hotfix branches are used to fix **severe bugs** that have been released in production and **cannot wait** for a new release to be fixed. The essence is that work of team members (on the `dev` branch) can continue, while another person is preparing a quick production fix.
 - **Origin**: `main`.
-- **Merge Target**: `develop` and `main`.
+- **Merge Target**: `dev` and `main`.
 - **Naming**: Has to start with `hotfix-*`.
 
 ### Feature Branches
-Feature branches are used to develop new features without specifying the exact release they'll be a part of. These branches exist until the feature is completed, then they're merged into `develop` to add the new feature to the upcoming release, or discarded if the feature isn't viable.
-- **Origin**: `develop`.
-- **Merge Target**: `develop`.
-- **Naming**: Anything except `main`, `master`, `develop`, `release-*`, or `hotfix-*`.
+Feature branches are used to develop new features without specifying the exact release they'll be a part of. These branches exist until the feature is completed, then they're merged into `dev` to add the new feature to the upcoming release, or discarded if the feature isn't viable.
+- **Origin**: `dev`.
+- **Merge Target**: `dev`.
+- **Naming**: Anything except `main`, `master`, `dev`, `release-*`, or `hotfix-*`.
 
 ## How to effectively use the branch system
 ### Main branch:
@@ -44,7 +44,7 @@ Merging the main branch into other branches is not recomended, but in case that 
 ```sh
 git checkout [NAME] &&     -> Move to "[NAME]" branch
 git pull &&                -> Pulls remote branch changes
-git merge --no-ff main &&  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the develop branch)
+git merge --no-ff main &&  -> Merges "main" into "[NAME]" without fast-forward (keeps historical info of the dev branch)
 git push origin [NAME]  -> Pushes the changes from our local branch "[NAME]" to the remote branch "[NAME]" (origin). Equal to git push while on the [NAME] branch.
 ```
 **Fast cmd**:
@@ -52,57 +52,57 @@ git push origin [NAME]  -> Pushes the changes from our local branch "[NAME]" to 
 git checkout [X] && git pull && git merge --no-ff main && git push origin [X]
 ```
 
-### Develop branch:
-#### Creating a develop branch
-In a newly created repository you will already have the main branch, to create the develop branch use the following commands.
+### Dev branch:
+#### Creating a development branch
+In a newly created repository you will already have the main branch, to create the development branch use the following commands.
 ```sh
 git pull &&                            -> Pulls remote branch changes
-git checkout -b develop main &&        -> Creates local branch "develop" from branch "main"
-git push --set-upstream origin develop -> Pushes newly created local develop branch to the repository
+git checkout -b dev main &&        -> Creates local branch "dev" from branch "main"
+git push --set-upstream origin dev -> Pushes newly created local dev branch to the repository
 ```
 **Fast cmd**:
 ```sh
-git checkout -b develop main && git pull && git push --set-upstream origin develop
+git checkout -b dev main && git pull && git push --set-upstream origin dev
 ```
 
-#### Merging a stable develop state into main
-Once the develop branch is stable, you can merge it into the main branch so that the released version can be updated. Releases are normally tagged for easier identification and to give more information about the release.
+#### Merging a stable development state into main
+Once the development branch is stable, you can merge it into the main branch so that the released version can be updated. Releases are normally tagged for easier identification and to give more information about the release.
 ```sh
 git checkout main &&
 git pull &&
-git merge --no-ff develop &&
+git merge --no-ff dev &&
 git tag -a <tagname> &&      -> Optional, creates tag of current version of main. Ex: v1.0
 git push origin <tagname> && -> Optional, pushes tag of current version of main
 git push origin main
 ```
 **Fast cmd**:
 ```sh
-git checkout main && git pull && git merge --no-ff develop && git push origin main
-git checkout main && git pull && git merge --no-ff develop && git tag -a [X] && git push origin [X] && git push origin main
+git checkout main && git pull && git merge --no-ff dev && git push origin main
+git checkout main && git pull && git merge --no-ff dev && git tag -a [X] && git push origin [X] && git push origin main
 ```
 
 ### Feature branches:
 #### Creating a feature branch
-When starting to work on a new feature, you have to branch off from the latest version of the develop branch. You can move to the develop branch and update it using the following commands.
+When starting to work on a new feature, you have to branch off from the latest version of the development branch. You can move to the development branch and update it using the following commands.
 ```sh
-git checkout develop &&
+git checkout dev &&
 git pull
 ```
 
 Once you have made sure that it's on the latest version you can create a new feature branch via this command.
 ```sh
-git checkout -b [NAME] develop &&
+git checkout -b [NAME] dev &&
 git push --set-upstream origin [NAME]
 ```
 
-#### Merging a finished feature into develop
-Once you have finished a feature, you can merge it into the develop branch so that it can become a new feature to the upcoming release, or discarded if the feature isn't viable. To do that you have to move to the develop branch and merge the feature into it, we will also delete the feature branch while merging it.
+#### Merging a finished feature into dev
+Once you have finished a feature, you can merge it into the development branch so that it can become a new feature to the upcoming release, or discarded if the feature isn't viable. To do that you have to move to the development branch and merge the feature into it, we will also delete the feature branch while merging it.
 ```sh
-git checkout develop &&
+git checkout dev &&
 git pull &&
 git merge --no-ff [NAME] &&
 git push origin --delete [NAME] &&
-git push origin develop
+git push origin dev
 ```
 
 ### Hotfix branch:
@@ -120,7 +120,7 @@ git push --set-upstream origin hotfix-[NAME]
 ```
 
 #### Merging a hotfix
-After fixing the bug you have to merge it into both `main` and `develop`, use the following commands to update the main branch as well as to delete the hotfix branch. Creating a tag is **mandatory**, you don't want to have the last tag bugged!
+After fixing the bug you have to merge it into both `main` and `dev`, use the following commands to update the main branch as well as to delete the hotfix branch. Creating a tag is **mandatory**, you don't want to have the last tag bugged!
 ```sh
 git checkout main &&
 git pull &&
@@ -135,12 +135,12 @@ git push origin main
 git checkout main && git pull && git merge --no-ff hotfix-[X] && git push origin --delete hotfix-[X] && git tag -a [X] && git push origin [X] && git push origin main
 ```
 
-And the following commands to update the develop branch.
+And the following commands to update the development branch.
 ```sh
-git checkout develop &&
+git checkout dev &&
 git pull &&
 git merge --no-ff main &&
-git push origin develop
+git push origin dev
 ```
 
 ## Visualization
