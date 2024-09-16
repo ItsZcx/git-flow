@@ -62,7 +62,7 @@ git push --set-upstream origin dev -> Pushes newly created local dev branch to t
 ```
 **Fast cmd**:
 ```sh
-git checkout -b dev main && git pull && git push --set-upstream origin dev
+git pull && git checkout -b dev main && git push --set-upstream origin dev
 ```
 
 #### Merging a stable development state into main
